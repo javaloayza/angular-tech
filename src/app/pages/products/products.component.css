@@ -1,0 +1,12 @@
+.banner-img {
+  height: 450px;
+  object-fix: cover;
+}
+
+@media (max-width: 768px) {
+  .banner-img {
+    display: flex;
+    height: 175px;
+    width: 100%;
+  }
+}

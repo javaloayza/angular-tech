@@ -1,0 +1,144 @@
+<app-navbar></app-navbar>
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="assets/images/banner1.jpg" class="d-block w-100 banner-img" alt="banner1">
+    </div>
+    <div class="carousel-item">
+      <img src="assets/images/banner2.png" class="d-block w-100 banner-img" alt="banner2">
+    </div>
+    <div class="carousel-item">
+      <img src="assets/images/banner3.png" class="d-block w-100 banner-img" alt="banner3">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-6 w-100 mx-2rem d-flex justify-content-end">
+        <button class="btn btn-primary mb-3 me-2" data-bs-toggle="modal" data-bs-target="#createProductModal">Crear Producto</button>
+        <a href="/categories" class="btn btn-secondary mb-3">Categorías</a>
+      </div>
+    </div>
+
+
+
+  <div class="row mt-5">
+    <div class="col-md-4" *ngFor="let product of products; let i = index">
+      <div class="card r mb-3">
+        <div class="d-flex justify-content-center">
+          <img [src]="product.image" class="card-img-top" alt="{{product.title}}" style="width: fit-content; height: auto; max-height: 250px; object-fit: cover;">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">{{product.description}}</p>
+          <p class="card-text"><strong>Precio:</strong> ${{product.price}}</p>
+          <p class="card-text"><strong>Categoría:</strong> {{ getCategoryName(product.categoryId) }}</p>
+          <button (click)="selectProduct(product.id)" type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editModal">
+            Editar
+          </button>
+          <button class="btn btn-danger" (click)="deleteProduct(product.id, i)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Producto -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" class="fw-bold">Editar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formEdit" (ngSubmit)="editProduct(id)">
+            <div class="form-group">
+              <label for="editName" class="fw-bold">Nombre</label>
+              <input type="text" class="form-control" id="editName" formControlName="name" [(ngModel)]="selectedProduct.name">
+            </div>
+            <div class="form-group">
+              <label for="editDescription" class="fw-bold">Descripción</label>
+              <textarea class="form-control" id="editDescription" formControlName="description" [(ngModel)]="selectedProduct.description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="editPrice" class="fw-bold">Precio</label>
+              <input type="number" class="form-control" id="editPrice" formControlName="price" [(ngModel)]="selectedProduct.price">
+            </div>
+            <div class="form-group">
+              <label for="editImage" class="fw-bold">URL de Imagen</label>
+              <input type="text" class="form-control" id="editImage" formControlName="image" [(ngModel)]="selectedProduct.image">
+            </div>
+            <div class="form-group mb-3">
+              <label for="editCategory" class="fw-bold">Categoría</label>
+              <select class="form-select" id="editCategory" formControlName="categoryId" [(ngModel)]="selectedProduct.categoryId">
+                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2 mx-2">Guardar Cambios</button>
+            <button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Cerrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Crear Producto -->
+  <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createProductModalLabel" class="fw-bold">Crear Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="form" (ngSubmit)="addProduct()">
+            <div class="form-group">
+              <label for="name" class="fw-bold">Nombre</label>
+              <input type="text" class="form-control" id="name" formControlName="name" [(ngModel)]="form.value.name">
+              <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+                <small class="text-danger">El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="description" class="fw-bold">Descripción</label>
+              <textarea class="form-control" id="description" formControlName="description" [(ngModel)]="form.value.description"></textarea>
+              <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+                <small class="text-danger">La descripción es obligatoria.</small>
+              </div>
+            </div>
+            <div class="form-group" class="fw-bold">
+              <label for="price">Precio</label>
+              <input type="number" class="form-control" id="price" formControlName="price" [(ngModel)]="form.value.price">
+              <div *ngIf="form.get('price')?.invalid && form.get('price')?.touched">
+                <small class="text-danger">El precio es obligatorio y debe ser mayor a 0.</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="image" class="fw-bold">URL de Imagen</label>
+              <input type="text" class="form-control" id="image" formControlName="image" [(ngModel)]="form.value.image">
+              <div *ngIf="form.get('image')?.invalid && form.get('image')?.touched">
+                <small class="text-danger">La URL de la imagen es obligatoria.</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="category" class="fw-bold">Categoría</label>
+              <select class="form-control" id="category" formControlName="categoryId" [(ngModel)]="form.value.categoryId">
+                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Producto</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
