@@ -15,8 +15,8 @@ export class NavbarComponent {
   //     this.cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
   //   });
   // }
-
   // navigateToCart() {
   //   this.router.navigate(['/cart']);
   // }
+
 }
