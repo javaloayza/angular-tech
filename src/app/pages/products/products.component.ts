@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from './../../services/products.service';
 import { CategoriesService } from './../../services/categories.service';
@@ -35,7 +36,8 @@ export class ProductsComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private categoriesService: CategoriesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.fetchProducts();
@@ -45,19 +47,20 @@ export class ProductsComponent implements OnInit {
   fetchProducts() {
     this.productsService.getProducts().subscribe((response: any) => {
       this.products = response;
-      console.log('fetchProducts', this.products);
+      // console.log('fetchProducts', this.products);
     });
   }
 
   fetchCategories() {
     this.categoriesService.getCategories().subscribe((response: any) => {
       this.categories = response;
-      console.log('fetchCategories', this.categories);
+      // console.log('fetchCategories', this.categories);
     });
   }
 
   addProduct() {
     if (!this.form.valid) {
+      console.log('form', this.form.valid)
       this.form.markAllAsTouched();
       return;
     }
@@ -104,8 +107,8 @@ export class ProductsComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.productsService.deleteProduct(id).subscribe(
-          () => {
+        this.productsService.deleteProduct(id).subscribe({
+          next: () => {
             // Eliminar de la lista local
             this.products.splice(index, 1);
 
@@ -115,16 +118,18 @@ export class ProductsComponent implements OnInit {
               'success'
             );
           },
-          (error) => {
+          error: (error) => {
             Swal.fire(
               'Error',
               'No se pudo eliminar el producto. Por favor, intente nuevamente.',
               'error'
             );
             console.error('Error eliminando el producto:', error);
+          },
+          complete: () => {
+            console.log('Operación de eliminación completada.');
           }
-        );
-      }
+        });      }
     });
   }
 
@@ -132,6 +137,11 @@ export class ProductsComponent implements OnInit {
   getCategoryName(categoryId: number): string {
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.name : 'Sin categoría';
+  }
+
+  handleDetails(id: string) {
+    console.log('handleDetails', id);
+    this.router.navigate(['product', id]);
   }
 
 }

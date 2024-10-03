@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <div class="row">
+    <!-- TODO: Agregar *ngFor para iterar productos -->
+
+    <div class="col-md-4 mb-3" *ngFor="let product of products">
+      <div class="card"  (click)="onProductClick(product.id || '')">
+        <!-- TODO: Mostrar imagen del producto -->
+        <img [src]="product.image" class="card-img-top" alt="">
+
+        <div class="card-body">
+          <!-- TODO: Mostrar nombre -->
+          <h5 class="card-title">{{product.name}}</h5>
+
+          <!-- TODO: Mostrar descripción -->
+          <p class="card-text">{{product.description}}</p>
+
+          <!-- TODO: Mostrar categoría -->
+          <p class="card-text"><strong>{{product.categoryName}}</strong> </p>
+
+          <!-- TODO: Mostrar precio -->
+          <p class="card-text"><strong>{{product.price}}</strong> $</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

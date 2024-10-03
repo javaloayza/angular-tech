@@ -34,8 +34,8 @@
   <div class="row mt-5">
     <div class="col-md-4" *ngFor="let product of products; let i = index">
       <div class="card r mb-3">
-        <div class="d-flex justify-content-center">
-          <img [src]="product.image" class="card-img-top" alt="{{product.title}}" style="width: fit-content; height: auto; max-height: 250px; object-fit: cover;">
+        <div class="d-flex justify-content-center" (click)="handleDetails(product.id) ">
+          <img [src]="product.image" class="card-img-top" alt="{{product.name}}" style="width: fit-content; height: auto; max-height: 250px; object-fit: cover;">
         </div>
         <div class="card-body">
           <h5 class="card-title">{{product.name}}</h5>
