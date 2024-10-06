@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Categories } from '../categories/categories.interface';
 import { CategoriesService } from '../../services/categories.service'
+import { Producto } from '../products-list/products-list.interface';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import { CategoriesService } from '../../services/categories.service'
 export class HomeComponent implements OnInit {
 
   categories: Categories[] = [];
+  showForm: boolean = false;
 
   constructor(private categoriesService: CategoriesService) {}
 
@@ -25,7 +27,12 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  onHandlerProductClick(event:any) {
+  HandlerProductClick(event:any) {
     console.log('click from the child', event)
+  }
+
+  HandlerProductCreated(producto: Producto) {
+    console.log('product created', producto);
+    this.showForm = false;
   }
 }

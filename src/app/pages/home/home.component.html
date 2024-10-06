@@ -1,5 +1,15 @@
 <div class="container">
   <h1>Bienvenido a nuestro Ecommerce</h1>
 
-  <app-product-list [categories]="categories"  (productClick)="onHandlerProductClick($event)"></app-product-list>
+  <button (click)="showForm = !showForm" class="btn btn-success mb-3">
+    {{showForm ? 'Cancelar' : 'Crear Producto'}}
+  </button>
+
+  <app-product-form
+    *ngIf="showForm"
+    (productCreated)="HandlerProductCreated($event)"
+  >
+  </app-product-form>
+
+  <app-product-list [categories]="categories"  (productClick)="HandlerProductClick($event)"></app-product-list>
 </div>

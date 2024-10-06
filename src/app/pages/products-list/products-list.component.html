@@ -5,7 +5,9 @@
     <div class="col-md-4 mb-3" *ngFor="let product of products">
       <div class="card"  (click)="onProductClick(product.id || '')">
         <!-- TODO: Mostrar imagen del producto -->
-        <img [src]="product.image" class="card-img-top" alt="">
+        <div class="d-flex justify-content-center">
+          <img [src]="product.image" class="card-img-top" alt="" style="width: fit-content; max-width: 100%; height: auto; max-height: 250px; object-fit: cover;">
+        </div>
 
         <div class="card-body">
           <!-- TODO: Mostrar nombre -->

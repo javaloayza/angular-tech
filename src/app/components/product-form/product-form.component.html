@@ -1,1 +1,89 @@
-<p>product-form works!</p>
+<div class="container">
+  <h3>Crear Nuevo Producto</h3>
+
+  <form [formGroup]="productForm" (ngSubmit)="crearProducto()">
+    <!-- TODO: Formulario reactivo"-->
+
+    <!-- Campo Name -->
+    <div class="form-group mb-3">
+      <label for="name">Nombre</label>
+      <input type="text" class="form-control" id="name" formControlName="name">
+            <!-- Mensajes de error -->
+      <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+        <small class="text-danger" *ngIf="productForm.get('name')?.errors?.['required']">
+          El nombre es obligatorio
+        </small>
+        <small class="text-danger" *ngIf="productForm.get('name')?.errors?.['minlength']">
+          El nombre debe tener mínimo 2 caracteres
+        </small>
+        <small class="text-danger" *ngIf="productForm.get('name')?.errors?.['maxlength']">
+          El nombre no puede exceder 30 caracteres
+        </small>
+      </div>
+    </div>
+
+    <!-- Campo Description -->
+    <div class="form-group mb-3">
+      <label for="description">Descripción</label>
+      <textarea class="form-control" id="description" formControlName="description"></textarea>
+      <!-- TODO: Mensajes de validación -->
+      <div *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+        <small class="text-danger" *ngIf="productForm.get('description')?.errors?.['required']">
+          La descripción es obligatoria
+        </small>
+        <small class="text-danger" *ngIf="productForm.get('description')?.errors?.['minlength']">
+          La descripción debe tener mínimo 5 caracteres
+        </small>
+        <small class="text-danger" *ngIf="productForm.get('description')?.errors?.['maxlength']">
+          La descripción no puede exceder 100 caracteres
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="image">Imagen</label>
+      <input class="form-control" id="image" formControlName="image">
+      <!-- TODO: Mensajes de validación -->
+      <div *ngIf="productForm.get('image')?.invalid && productForm.get('image')?.touched">
+        <small class="text-danger" *ngIf="productForm.get('image')?.errors?.['required']">
+          La URL de la imagen es obligatoria
+        </small>
+        <small class="text-danger" *ngIf="productForm.get('image')?.errors?.['pattern']">
+          Debe ser una URL válida que termine en .jpg, .jpeg, .png, .gif o .webp
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="price">Precio</label>
+      <input class="form-control" id="price" formControlName="price">
+      <!-- TODO: Mensajes de validación -->
+      <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+        <small class="text-danger" *ngIf="productForm.get('price')?.errors?.['required']">
+          El precio es obligatorio
+        </small>
+        <small class="text-danger" *ngIf="productForm.get('price')?.errors?.['min']">
+          El precio debe ser mayor a 0
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="category">Categoria</label>
+      <select class="form-control" id="price" formControlName="categoryId">
+        <option value="">Selecciona categoría</option>
+        <option *ngFor="let category of categories" value="category.id">{{category.name}}</option>
+      </select>
+      <!-- TODO: Mensajes de validación -->
+      <div *ngIf="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched">
+        <small class="text-danger" *ngIf="productForm.get('categoryId')?.errors?.['required']">
+          Debe seleccionar una categoría
+        </small>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <button type="submit" class="btn btn-primary">Crear Producto</button>
+    <button type="button" class="btn btn-secondary">Cancelar</button>
+  </form>
+</div>
