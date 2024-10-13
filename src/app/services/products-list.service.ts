@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Product } from '../pages/products/products.interface';
+import { Producto } from '../pages/products-list/products-list.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,9 @@ export class ProductsServiceTemp {
         return res;
       })
     )
+  }
+
+  createProduct(product:Producto){
+    return this.http.post(`${this.url}/products.json`, product)
   }
 }

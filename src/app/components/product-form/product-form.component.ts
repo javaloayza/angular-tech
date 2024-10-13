@@ -16,7 +16,7 @@ export class ProductFormComponent implements OnInit {
     description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
     image: ['', [
       Validators.required,
-      Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)
+      // Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)
     ]],
     price: ['', [Validators.required, Validators.min(1)]],
     categoryId: ['', Validators.required]
@@ -36,8 +36,8 @@ export class ProductFormComponent implements OnInit {
   }
 
 
-  crearProducto() {
-    console.log(this.productForm.value);
+  crearProducto(): void {
+    this.productCreated.emit(this.productForm.value)
   }
 
   fetchCategories(): void {

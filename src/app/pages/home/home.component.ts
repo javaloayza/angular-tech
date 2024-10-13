@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Categories } from '../categories/categories.interface';
 import { CategoriesService } from '../../services/categories.service'
 import { Producto } from '../products-list/products-list.interface';
+import { ProductsServiceTemp } from 'src/app/services/products-list.service';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +13,12 @@ export class HomeComponent implements OnInit {
 
   categories: Categories[] = [];
   showForm: boolean = false;
+  searchTerm: string = '';
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(
+    private categoriesService: CategoriesService,
+    private productServiceTemp: ProductsServiceTemp
+  ) {}
 
   ngOnInit():void {
     this.fetchCategories();
@@ -27,12 +32,20 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  HandlerProductClick(event:any) {
-    console.log('click from the child', event)
+  handlerProductClick(productId:string) {
+    console.log('click from the child', productId)
   }
 
-  HandlerProductCreated(producto: Producto) {
-    console.log('product created', producto);
-    this.showForm = false;
+  handlerProductCreated(producto: Producto) {
+    this.productServiceTemp.createProduct(producto).subscribe({
+      next: (response: any)=> {
+        console.log('response', response)
+        this.showForm = false;
+      },
+      error: (error: any) => {
+        console.error('Error creating product', error)
+      }
+    })
   }
+
 }

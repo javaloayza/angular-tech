@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angular/core';
 import { Producto } from './products-list.interface';
 import { ProductsServiceTemp } from 'src/app/services/products-list.service';
 import { Categories } from '../categories/categories.interface';
@@ -10,9 +10,11 @@ import { Categories } from '../categories/categories.interface';
   styleUrls: ['./products-list.component.css']
 })
 
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnChanges {
   products: Producto[] = [];
+  filteredProducts: Producto[] = [];
   @Input() categories: Categories[] = [];
+  @Input() searchTerm: string = ''
   @Output() productClick = new EventEmitter<string>;
 
   constructor(
@@ -21,7 +23,10 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchProducts();
-    console.log(this.products)
+  }
+
+  ngOnChanges(): void {
+    this.filterProducts();
   }
 
   fetchProducts(): void {
@@ -31,16 +36,28 @@ export class ProductListComponent implements OnInit {
       ...product,
       categoryName: this.getCategoryName(product.categoryId)
     }));
+    this.filteredProducts = this.products;
+    this.filterProducts();
   });
 }
 
-getCategoryName(categoryId: string) {
-    const category = this.categories.find(category => category.id === categoryId)
-    return category ? category?.name : 'Categoría no encontrada'
+  filterProducts():void {
+    if(!this.searchTerm.trim()) {
+      this.filteredProducts = this.products;
+    } else {
+      this.filteredProducts = this.products.filter(product =>  product.name?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    }
+      console.log('filteredProducts:', this.filteredProducts.length);
   }
 
-onProductClick(productId: string): void {
-  return this.productClick.emit(productId)
-}
+  getCategoryName(categoryId: string) {
+      const category = this.categories.find(category => category.id === categoryId)
+      return category ? category?.name : 'Categoría no encontrada'
+    }
+
+  onProductClick(productId: string): void {
+    return this.productClick.emit(productId)
+  }
 
 }
