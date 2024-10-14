@@ -60,4 +60,9 @@ export class ProductListComponent implements OnInit, OnChanges {
     return this.productClick.emit(productId)
   }
 
+  clearSearch(): void {
+    this.filteredProducts = this.products;
+    this.searchTerm = '';
+  }
+
 }
