@@ -8,14 +8,13 @@
     class="form-control mb-3"
   />
 
-  >
-
   <button (click)="showForm = !showForm" class="btn btn-success mb-3">
     {{showForm ? 'Cancelar' : 'Crear Producto'}}
   </button>
 
   <app-product-form
     *ngIf="showForm"
+    [categories]="categories"
     (productCreated)="handlerProductCreated($event)"
   >
   </app-product-form>
@@ -24,5 +23,6 @@
   [categories]="categories"
   [searchTerm]="searchTerm"
   (productClick)="handlerProductClick($event)"
+  [reloadTrigger]="reloadTrigger"
   ></app-product-list>
 </div>

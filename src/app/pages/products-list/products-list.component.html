@@ -1,20 +1,65 @@
 <div class="container mt-4">
-  <div *ngIf="filteredProducts.length > 0; else noResultTemplate" class="row">
 
-    <div class="col-md-4 mb-3" *ngFor="let product of filteredProducts">
-      <div class="card"  (click)="onProductClick(product.id || '')">
-        <div class="d-flex justify-content-center">
-          <img [src]="product.image" class="card-img-top" alt="" style="width: fit-content; max-width: 100%; height: auto; max-height: 250px; object-fit: cover;">
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">{{product.name}}</h5>
-          <p class="card-text">{{product.description}}</p>
-          <p class="card-text"><strong>{{product.categoryName}}</strong> </p>
-          <p class="card-text"><strong>{{product.price}}</strong> $</p>
+  <div *ngIf="isLoading" class="text-center p-4">
+    <div class="spinner-border"></div>
+    <p>Cargando productos...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <p>{{ errorMessage }}</p>
+    <button class="btn btn-outline-danger btn-sm" (click)="fetchProducts()">
+      🔄 Reintentar
+    </button>
+  </div>
+
+   <div *ngIf="!isLoading && !errorMessage">
+    <div *ngIf="filteredProducts.length > 0; else noResultTemplate" class="row">
+
+      <div class="col-md-4 mb-3" *ngFor="let product of filteredProducts; trackBy: trackByProductId">
+        <div
+          class="card"
+          [ngClass]="getCardClasses(product)"
+          (click)="onProductClick(product.id || '')">
+
+          <div class="d-flex justify-content-center">
+            <img
+              [src]="product.image"
+              class="card-img-top"
+              [ngClass]="getImageClasses(product)"
+              alt="{{product.name}}"
+              style="width: fit-content; max-width: 100%; height: auto; max-height: 250px; object-fit: cover;">
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title">{{product.name}}</h5>
+            <p class="card-text">{{product.description}}</p>
+            <p class="card-text"><strong>{{product.categoryName}}</strong></p>
+
+            <!-- Precio con clases dinámicas -->
+            <p class="card-text">
+              <strong [ngClass]="getPriceClasses(product.price!)">
+                ${{product.price}}
+              </strong>
+            </p>
+
+            <!-- Stock indicator -->
+            <p class="card-text">
+              <span
+                [ngClass]="{
+                  'badge bg-success': product.stock! > 10,
+                  'badge bg-warning': product.stock! > 0 && product.stock! <= 10,
+                  'badge bg-danger': product.stock! <= 2
+                }">
+                {{ product.stock === 0 ? 'Agotado' : 'Stock: ' + product.stock }}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 
   <ng-template #noResultTemplate>
     <div class="text-center mt-5">

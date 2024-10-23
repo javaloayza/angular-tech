@@ -10,3 +10,115 @@
     width: 100%;
   }
 }
+
+/* Tarjetas premium */
+.card-premium {
+  border: 2px solid #ffd700;
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(145deg, #fff, #fffbf0);
+  transform: translateY(-2px);
+}
+
+.card-premium:hover {
+  box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+/* Tarjetas económicas */
+.card-budget {
+  border: 2px solid #28a745;
+  background-color: #f8fff9;
+}
+
+.card-budget:hover {
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* Productos agotados */
+.card-out-of-stock {
+  opacity: 0.6;
+  border: 2px dashed #6c757d;
+  background-color: #f8f9fa;
+}
+
+.card-out-of-stock .card-body {
+  position: relative;
+}
+
+.card-out-of-stock .card-body::before {
+  content: "AGOTADO";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+/* Productos nuevos */
+.card-new {
+  position: relative;
+  border: 2px solid #007bff;
+  animation: pulse 2s infinite;
+}
+
+.card-new::before {
+  content: "NUEVO";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+/* Imágenes premium */
+.img-premium {
+  /* border: 3px solid #ffd700; */
+  border-radius: 8px;
+  filter: brightness(1.1);
+}
+
+/* Imágenes agotadas */
+.img-grayscale {
+  filter: grayscale(100%) brightness(0.7);
+}
+
+/* Animaciones */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+/* Hover effects para todas las tarjetas */
+.card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Badges de stock */
+.badge {
+  font-size: 0.85rem;
+}

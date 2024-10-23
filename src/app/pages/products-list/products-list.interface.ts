@@ -6,4 +6,7 @@ export interface Producto {
   image: string | null;
   categoryId?: string | null;
   categoryName: string | null;
+
+  stock?: number;           // Para saber si hay inventario
+  createdAt?: string;       // Para detectar productos nuevos
 }

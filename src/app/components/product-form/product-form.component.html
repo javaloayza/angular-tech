@@ -1,15 +1,19 @@
 <div class="container">
   <h3>Crear Nuevo Producto</h3>
 
-  <form [formGroup]="productForm" (ngSubmit)="crearProducto()">
-    <!-- TODO: Formulario reactivo"-->
+  <form #productFormRef [formGroup]="productForm" (ngSubmit)="crearProducto()">
 
-    <!-- Campo Name -->
     <div class="form-group mb-3">
       <label for="name">Nombre</label>
-      <input type="text" class="form-control" id="name" formControlName="name">
+      <input #nameInput
+      type="text"
+      class="form-control"
+      id="name"
+      formControlName="name"
+      [class.is-invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+      >
             <!-- Mensajes de error -->
-      <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+    <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
         <small class="text-danger" *ngIf="productForm.get('name')?.errors?.['required']">
           El nombre es obligatorio
         </small>
@@ -22,7 +26,6 @@
       </div>
     </div>
 
-    <!-- Campo Description -->
     <div class="form-group mb-3">
       <label for="description">Descripción</label>
       <textarea class="form-control" id="description" formControlName="description"></textarea>
@@ -56,7 +59,13 @@
 
     <div class="form-group mb-3">
       <label for="price">Precio</label>
-      <input class="form-control" id="price" formControlName="price">
+      <input #priceInput
+      type="number"
+      class="form-control"
+      id="price"
+      formControlName="price"
+      [class.is-invalid]="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+      >
       <!-- TODO: Mensajes de validación -->
       <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
         <small class="text-danger" *ngIf="productForm.get('price')?.errors?.['required']">
@@ -72,7 +81,7 @@
       <label for="category">Categoria</label>
       <select class="form-control" id="price" formControlName="categoryId">
         <option value="">Selecciona categoría</option>
-        <option *ngFor="let category of categories" value="category.id">{{category.name}}</option>
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
       </select>
       <!-- TODO: Mensajes de validación -->
       <div *ngIf="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched">
@@ -83,7 +92,7 @@
     </div>
 
     <!-- Botones -->
-    <button type="submit" class="btn btn-primary">Crear Producto</button>
+    <button type="submit"  class="btn btn-primary">Crear Producto</button>
     <button type="button" class="btn btn-secondary">Cancelar</button>
   </form>
 </div>
